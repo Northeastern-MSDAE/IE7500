@@ -1,0 +1,23 @@
+# Data Handling & Processing
+pandas==2.2.3
+numpy==1.26.4
+
+# Visualization
+matplotlib==3.10.1
+seaborn==0.13.2
+wordcloud==1.9.4
+
+# Natural Language Processing (NLP)
+nltk==3.9.1
+transformers==4.49.0
+
+# Machine Learning
+scikit-learn==1.6.1
+scikeras==0.13.0
+
+# Deep Learning (TensorFlow & Keras)
+tensorflow==2.17.0
+keras==3.9.0
+
+# Additional Dependencies
+tf-keras==2.17.0

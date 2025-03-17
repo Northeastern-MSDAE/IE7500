@@ -59,7 +59,7 @@ We use the **Sentiment140 dataset**, which contains 1.6 million tweets labeled a
 ###  **1. Clone the Repository**  
 ```bash
 git clone https://github.com/Northeastern-MSDAE/IE7500.git
-cd Sentiment-Analysis-Twitter
+cd IE7500
 ```
 
 ###  **2. Create a Virtual Environment**  

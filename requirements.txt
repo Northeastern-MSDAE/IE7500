@@ -21,3 +21,6 @@ keras==3.9.0
 
 # Additional Dependencies
 tf-keras==2.17.0
+
+#data cleaning
+emoji==2.14.1

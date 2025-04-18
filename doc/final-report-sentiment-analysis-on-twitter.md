@@ -115,7 +115,7 @@ Custom functions address Twitter-specific challenges:
 - **Preprocessing Pipeline:**
   The `preprocess_text` function further cleans the text by removing non-alphabetic characters, tokenizing, filtering out stop words, and applying lemmatization.
 
-These preprocessing steps standardize the tweet text, enhancing its quality for effective feature extraction.
+These preprocessing steps standardize the tweet text, enhancing its quality for effective feature extraction. For a complete list of preprocessing steps, refer to **Appendix A**.
 
 #### 2.3 Exploratory Data Analysis (EDA)
 
@@ -167,7 +167,11 @@ Models trained on the engineered TF-IDF features include:
 - **Naive Bayes**
 
 **Hyperparameter Tuning:**
-Using GridSearchCV, we optimized model parameters (e.g., Logistic Regression with C=1, and SVM with an optimized kernel). The comparison table below summarizes performance metrics and training times.
+Using GridSearchCV, we optimized model parameters (e.g., Logistic Regression with C=1, and SVM with an optimized kernel). 
+
+For a complete list of model training, hyperparameter tuning, and evaluation, refer to **Appendix B**
+
+The comparison table below summarizes performance metrics and training times.
 
 **Table 1: Traditional Model Performance Comparison**
 
@@ -189,6 +193,8 @@ Implemented architectures include:
 
 Each model’s performance was evaluated using cross-validation and compared against traditional methods.
 
+For the complete code related to model training, hyperparameter tuning, and evaluation, refer to **Appendix B**.
+
 #### 4.3 Ensemble Methods
 
 An ensemble approach aggregates predictions from both traditional and deep learning models by averaging their predicted probabilities. The following graphs illustrate the improved ensemble performance:
@@ -198,6 +204,8 @@ An ensemble approach aggregates predictions from both traditional and deep learn
 
 ![Ensemble Precision-Recall Curve](images/ensemble-precision-recall.png)
 *Figure 4: Precision-Recall Curve for the Ensemble Model*
+
+For further details on the ensemble method implementation, see **Appendix B**.
 
 ------
 
@@ -304,7 +312,89 @@ Potential improvements for future research include:
 
 ## Final Remarks
 
-This report comprehensively describes our sentiment analysis journey on Twitter data—from data acquisition and preprocessing through feature engineering, model development, evaluation, and ensemble integration. 
+This report comprehensively describes our sentiment analysis journey on Twitter data, from data acquisition and preprocessing through feature engineering, model development, evaluation, and ensemble integration. 
+
+
+
+## Appendices
+
+### Appendix A: Full Data Preprocessing Code
+
+#### clean_tweet Function
+
+```python
+# Full code for tweet cleaning and normalization
+def clean_tweet(tweet):
+    tweet = re.sub(r'http\S+', '', tweet)  # Remove URLs
+    tweet = re.sub(r'@\S+', '', tweet)  # Remove mentions
+    tweet = re.sub(r'#\S+', '', tweet)  # Remove hashtags
+    tweet = tweet.lower()  # Convert to lowercase
+    tweet = re.sub(r'[^\w\s]', '', tweet)  # Remove punctuation
+    tweet = re.sub(r'\s+', ' ', tweet)  # Remove extra spaces
+    return tweet
+```
+
+### Appendix B: Full Model Code
+
+#### Model Training and Evaluation
+
+```python
+# Code for Logistic Regression Model training
+from sklearn.linear_model import LogisticRegression
+lr_model = LogisticRegression()
+lr_model.fit(X_train, y_train)
+```
+
+#### Performance Evaluation
+
+```python
+# Generate Confusion Matrix
+from sklearn.metrics import confusion_matrix
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Confusion matrix
+cm = confusion_matrix(y_test, y_pred)
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=['Negative', 'Positive'], yticklabels=['Negative', 'Positive'])
+plt.xlabel('Predicted')
+plt.ylabel('Actual')
+plt.title('Confusion Matrix')
+plt.show()
+
+# ROC Curve
+from sklearn.metrics import roc_curve, auc
+
+fpr, tpr, thresholds = roc_curve(y_test, lr_model.predict_proba(X_test)[:, 1])
+roc_auc = auc(fpr, tpr)
+
+plt.figure()
+plt.plot(fpr, tpr, color='blue', label=f'ROC curve (area = {roc_auc:.2f})')
+plt.plot([0, 1], [0, 1], color='gray', linestyle='--')
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('Receiver Operating Characteristic')
+plt.legend(loc='lower right')
+plt.show()
+```
+
+#### Ensemble Method Code
+
+```python
+# Code for Ensemble Model
+from sklearn.ensemble import VotingClassifier
+from sklearn.svm import SVC
+
+# Create an ensemble model combining Logistic Regression and SVM
+ensemble_model = VotingClassifier(estimators=[('lr', LogisticRegression()), ('svm', SVC(probability=True))], voting='soft')
+ensemble_model.fit(X_train, y_train)
+
+# Predict and evaluate
+ensemble_preds = ensemble_model.predict(X_test)
+```
+
+------
+
+
 
 
 
